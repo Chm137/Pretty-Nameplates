@@ -1,0 +1,14 @@
+## Interface: 30300
+## Title: Pretty Nameplates
+## Notes: Супер пупер класт плейты я сделяль
+## Author: Baime / Меткиймуу
+## Version: 1.3.1
+## SavedVariables: PrettyNameplatesDB
+
+Config.lua
+Core.lua
+Nameplates.lua
+Castbars.lua
+Auras.lua
+OptionsGUI.lua
+MinimapButton.lua
