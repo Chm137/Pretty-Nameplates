@@ -66,57 +66,6 @@ function ns:UpdateAuras(myPlate, parentFrame)
         return
     end
 
-    if UnitName("target") == plateName and parentFrame:GetAlpha() >= 0.5 then
-        unit = "target"
-    elseif UnitName("mouseover") == plateName then
-        unit = "mouseover"
-    end
-    
-    if not unit then
-        ns:HideAllAuras(myPlate)
-        return
-    end
-    
-    if db.showAuras then
-        local auraIndex = 1
-        for i = 1, 40 do
-            local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster = UnitDebuff(unit, i)
-            if not name then break end
-            
-            if unitCaster == "player" then
-                local frame = myPlate.auras[auraIndex]
-                if frame then
-                    frame:Show()
-                    frame.icon:SetTexture(icon)
-                    local color = DebuffTypeColor[debuffType] or DebuffTypeColor["none"]
-                    frame.border:SetVertexColor(color.r, color.g, color.b)
-                    
-                    -- ЗУМ
-                    if db.zoomIcons then frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-                    else frame.icon:SetTexCoord(0, 1, 0, 1) end
-                    
-                    frame:SetScript("OnUpdate", function(self, elapsed)
-                        if expirationTime and expirationTime > 0 then
-                            local timeLeft = expirationTime - GetTime()
-                            if timeLeft <= 0 then self.cd:SetText("")
-                            elseif timeLeft > 60 then self.cd:SetText(math.ceil(timeLeft/60).."m")
-                            else self.cd:SetText(math.floor(timeLeft)) end
-                        else self.cd:SetText("") end
-                    end)
-                    auraIndex = auraIndex + 1
-                end
-            end
-            if auraIndex > 8 then break end
-        end
-        for i = auraIndex, #myPlate.auras do myPlate.auras[i]:Hide() end
-    else
-        for i=1, #myPlate.auras do myPlate.auras[i]:Hide() end
-    end
-    
-    local impIndex = 1
-    if ns.ImportantBuffs and db.showImportant then
-        for i = 1, 40 do
-            local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitBuff(unit, i)
             if not name then break end
             
             if ns.ImportantBuffs[spellId] then
@@ -125,27 +74,6 @@ function ns:UpdateAuras(myPlate, parentFrame)
                     frame:Show()
                     frame.icon:SetTexture(icon)
                     
-                    if db.zoomIcons then frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-                    else frame.icon:SetTexCoord(0, 1, 0, 1) end
-                    
-                    frame:SetScript("OnUpdate", function(self, elapsed)
-                        if expirationTime and expirationTime > 0 then
-                            local timeLeft = expirationTime - GetTime()
-                            if timeLeft <= 0 then self.cd:SetText("")
-                            else self.cd:SetText(math.floor(timeLeft)) end
-                        else self.cd:SetText("") end
-                    end)
-                    
-                    impIndex = impIndex + 1
-                end
-            end
-            if impIndex > 3 then break end
-        end
-    end
-    for i = impIndex, #myPlate.important do myPlate.important[i]:Hide() end
-end
-
-function ns:HideAllAuras(myPlate)
     for i=1, #myPlate.auras do myPlate.auras[i]:Hide() end
     for i=1, #myPlate.important do myPlate.important[i]:Hide() end
 end

@@ -267,6 +267,10 @@ function ns:CreatePlateFrame(parentFrame)
 
     ns:UpdatePlateStyle(myPlate)
 
+    myPlate:SetScript("OnShow", function(self)
+        if ns.UpdatePlateStyle then ns:UpdatePlateStyle(self) end
+    end)
+
     myPlate:SetScript("OnUpdate", function(self, elapsed)
         local db = PrettyNameplatesDB or ns.defaults
 
@@ -343,7 +347,12 @@ function ns:CreatePlateFrame(parentFrame)
             self:SetAlpha(0)
             return
         else
-            self:SetScale(db.scale or 1)
+            -- Pet System Logic
+            if ns.PetNamesCache[name] or unitType == "pet" then
+                self:SetScale(db.petScale or 0.7)
+            else
+                self:SetScale(db.scale or 1)
+            end
         end
 
         local min, max = self.oldHealth:GetMinMaxValues()
@@ -361,6 +370,9 @@ function ns:CreatePlateFrame(parentFrame)
 
         if classColor then
             self.hp:SetStatusBarColor(classColor.r, classColor.g, classColor.b)
+        elseif ns.PetNamesCache[name] or unitType == "pet" then
+            local c = db.petColor or { r = 0.5, g = 0.5, b = 0.5 }
+            self.hp:SetStatusBarColor(c.r, c.g, c.b)
         else
             local r, g, b = self.oldHealth:GetStatusBarColor()
             if db.tankMode then
