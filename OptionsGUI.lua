@@ -89,7 +89,7 @@ local function CreatePreviewFrame(parent)
         a.icon = a:CreateTexture(nil, "BACKGROUND")
         a.icon:SetAllPoints()
         a.icon:SetTexture(i == 1 and "Interface\\Icons\\Spell_Fire_FlameShock" or
-        "Interface\\Icons\\Spell_Shadow_CurseOfTounges")
+            "Interface\\Icons\\Spell_Shadow_CurseOfTounges")
 
         a.cd = a:CreateFontString(nil, "OVERLAY")
         a.cd:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
@@ -272,7 +272,9 @@ end
 -- == GUI MAIN ==
 function ns:ToggleGUI()
     if guiFrame then
-        if guiFrame:IsShown() then guiFrame:Hide() else
+        if guiFrame:IsShown() then
+            guiFrame:Hide()
+        else
             guiFrame:Show()
             ns.UpdatePreview()
         end
@@ -560,7 +562,7 @@ local function CreateLauncher()
     InterfaceOptions_AddCategory(panel)
     local t = panel:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
     t:SetPoint("TOPLEFT", 16, -16)
-    t:SetText("Pretty Nameplates v1.3.1")
+    t:SetText("Pretty Nameplates v1.3.3")
     local btn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btn:SetSize(200, 30)
     btn:SetPoint("CENTER")
